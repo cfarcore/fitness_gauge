@@ -1,0 +1,32 @@
+Nome,Data,Categoria,Esercizio,Valore,Peso,Genere,DataNascita
+bob,2025-01-20,metabolico,1000m row,4:10,60.0,femmina,1992-08-20
+alice,2025-05-20,forza,back squat,120,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,deadlift,130,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,strict press,45,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,bench press,65,60.0,Femmina,1990-05-15
+pietro,2025-05-20,forza,back squat,89,80.0,Maschio,1972-11-27
+pietro,2025-05-20,forza,deadlift,200,80.0,Maschio,1972-11-27
+pietro,2025-05-20,forza,strict press,34,80.0,Maschio,1972-11-27
+pietro,2025-05-20,forza,bench press,50,80.0,Maschio,1972-11-27
+alice,2025-05-20,metabolico,Fran,3:00,60.0,Femmina,1990-05-15
+alice,2025-05-20,metabolico,1 mile run,7,60.0,Femmina,1990-05-15
+alice,2025-05-20,condizionamento,fran,3:00,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,back squat,60,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,deadlift,70,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,strict press,30,60.0,Femmina,1990-05-15
+alice,2025-05-20,forza,bench press,45,60.0,Femmina,1990-05-15
+alice,2025-05-20,ginnastica,pull up,4,60.0,Femmina,1990-05-15
+alice,2025-05-20,ginnastica,ring dip,6,60.0,Femmina,1990-05-15
+alice,2025-05-20,metabolico,2000m row,8:00,60.0,Femmina,1990-05-15
+pietro,2025-05-20,Ginnastica,pull up,12,80.0,Maschio,1972-11-27
+pietro,2025-05-19,Ginnastica,Chest to Bar,10,80.0,Maschio,1972-11-27
+pietro,2025-05-15,Ginnastica,Toes to Bar,10,80.0,Maschio,1972-11-27
+pietro,2025-05-15,Ginnastica,Handstand Hold,00:10'',80.0,Maschio,1972-11-27
+pietro,2025-05-03,Ginnastica,Handstand Push-up,12,80.0,Maschio,1972-11-27
+pietro,2025-04-09,Ginnastica,Ring Muscle-up,12,80.0,Maschio,1972-11-27
+pietro,2025-03-18,Ginnastica,Bar Muscle-up,12,80.0,Maschio,1972-11-27
+pietro,2025-05-20,Forza,back squat,80,80.0,Maschio,1972-11-27
+pietro,2025-05-20,Forza,deadlift,100,80.0,Maschio,1972-11-27
+pietro,2025-05-08,Forza,strict press,70,80.0,Maschio,1972-11-27
+pietro,2025-05-01,Forza,bench press,120,80.0,Maschio,1972-11-27
+pietro,2025-05-01,Forza,Snatch,70,80.0,Maschio,1972-11-27
