@@ -366,7 +366,7 @@ if session.logged and session.is_coach:
                 ex_df = pd.concat([ex_df, nuovo], ignore_index=True)
                 save_csv(EXERCISES_FILE, ex_df)
                 st.success(f"Esercizio '{es_nuovo}' aggiunto!")
-                st.experimental_set_query_params(refresh="true")  # Trigger a rerun
+                + st.query_params.refresh = "true"
         st.markdown("### ❌ Elimina esercizio")
         if not ex_df.empty:
             to_del = st.selectbox("Seleziona esercizio da eliminare", ex_df["Esercizio"].unique())
@@ -445,7 +445,7 @@ if session.logged and session.is_coach:
                 b_df = pd.concat([b_df, pd.DataFrame([nuovo_bench])], ignore_index=True)
                 save_csv(BENCHMARK_FILE, b_df)
                 st.success("Benchmark aggiunto con successo!")
-                st.experimental_set_query_params(refresh="true")  # Trigger a rerun
+                + st.query_params.refresh = "true"
 
         # === Tab 3: Gestione Utenti ===
     with tabs[3]:
@@ -537,7 +537,7 @@ elif session.logged:
             users_df.loc[users_df["Nome"] == session.user, ["Peso", "Genere", "Cognome", "DataNascita"]] = [new_w, new_g, new_cognome, str(new_dn)]
             save_csv(USERS_FILE, users_df)
             st.success("Profilo aggiornato!")
-            st.experimental_set_query_params(refresh="true")  # Trigger a rerun
+            + st.query_params.refresh = "true"
 
     elif pagina == "📋 Inserisci Test":
         st.header("Inserisci Test")
@@ -808,4 +808,5 @@ elif session.logged:
 # Handle Refresh Logic
 if "refresh" in st.session_state and st.session_state["refresh"]:
     st.session_state["refresh"] = False
-    st.query_params = {"refresh": "true"}  # Simulate a refresh by updating query params
+    st.query_params.clear()                   # cancella vecchi param
+    st.query_params.refresh = "true"          # imposta il nuovo
