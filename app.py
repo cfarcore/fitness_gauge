@@ -537,7 +537,7 @@ elif session.logged:
             users_df.loc[users_df["Nome"] == session.user, ["Peso", "Genere", "Cognome", "DataNascita"]] = [new_w, new_g, new_cognome, str(new_dn)]
             save_csv(USERS_FILE, users_df)
             st.success("Profilo aggiornato!")
-            + st.query_params.refresh = "true"
+            st.experimental_set_query_params(refresh="true")  # Correct method to refresh query parameters
 
     elif pagina == "📋 Inserisci Test":
         st.header("Inserisci Test")
