@@ -354,20 +354,32 @@ if session.logged and session.is_coach:
         st.markdown("### ❌ Elimina esercizio")
         if not ex_df.empty:
             to_del = st.selectbox("Seleziona esercizio da eliminare", ex_df["Esercizio"].unique())
-            if st.button("Elimina selezionato"):
+            if "confirm_delete_exercise" not in st.session_state:
+                st.session_state.confirm_delete_exercise = None
+
+            if st.button("Elimina selezionato", key="delete_exercise"):
+                st.session_state.confirm_delete_exercise = to_del
+
+            if st.session_state.confirm_delete_exercise == to_del:
                 st.warning(f"Sei sicuro di voler eliminare l'esercizio '{to_del}' e i relativi test?")
-                if st.button("Conferma eliminazione"):
-                    # Remove the exercise from the exercises file
-                    ex_df = ex_df[ex_df["Esercizio"] != to_del]
-                    save_csv(EXERCISES_FILE, ex_df)
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Conferma eliminazione", key="confirm_exercise"):
+                        # Remove the exercise from the exercises file
+                        ex_df = ex_df[ex_df["Esercizio"] != to_del]
+                        save_csv(EXERCISES_FILE, ex_df)
 
-                    # Remove related entries from the database file
-                    db_df = load_csv(DB_FILE)
-                    db_df = db_df[db_df["Esercizio"] != to_del]
-                    save_csv(DB_FILE, db_df)
+                        # Remove related entries from the database file
+                        db_df = load_csv(DB_FILE)
+                        db_df = db_df[db_df["Esercizio"] != to_del]
+                        save_csv(DB_FILE, db_df)
 
-                    st.success(f"Esercizio '{to_del}' e i relativi test sono stati eliminati!")
-                    st.experimental_rerun()  # Trigger a page refresh
+                        st.success(f"Esercizio '{to_del}' e i relativi test sono stati eliminati!")
+                        st.session_state.confirm_delete_exercise = None
+                        st.experimental_rerun()  # Trigger a page refresh
+                with col2:
+                    if st.button("Annulla", key="cancel_exercise"):
+                        st.session_state.confirm_delete_exercise = None
 
     with tabs[2]:
         st.subheader("🎯 Benchmark")
@@ -728,19 +740,32 @@ elif session.logged:
         descr = {idx: f"{his.loc[idx,'Data']} – {his.loc[idx,'Esercizio']} – {his.loc[idx,'Valore']}"
                  for idx in choices}
         to_del = st.selectbox("Seleziona test da eliminare:", choices, format_func=lambda i: descr[i])
-        if to_del is not None and st.button("Elimina test selezionato"):
-            st.warning(f"Sei sicuro di voler eliminare il test '{descr[to_del]}'?")
-            if st.button("Conferma eliminazione"):
-                if to_del in his.index:
-                    # Remove the selected test from the DataFrame
-                    df = df.drop(index=to_del)
-                    # Save the updated DataFrame back to the file
-                    save_csv(DB_FILE, df)
-                    st.success("Test eliminato con successo!")
-                    st.experimental_rerun()  # Trigger a page refresh
-                else:
-                    st.error("Errore: Test selezionato non valido. Assicurati di selezionare un test valido dall'elenco.")
-                    st.stop()  # Stop execution to prevent further errors
+        if to_del is not None:
+            if "confirm_delete_test" not in st.session_state:
+                st.session_state.confirm_delete_test = None
+
+            if st.button("Elimina test selezionato", key="delete_test"):
+                st.session_state.confirm_delete_test = to_del
+
+            if st.session_state.confirm_delete_test == to_del:
+                st.warning(f"Sei sicuro di voler eliminare il test '{descr[to_del]}'?")
+                col1, col2 = st.columns(2)
+                with col1:
+                    if st.button("Conferma eliminazione", key="confirm_test"):
+                        if to_del in his.index:
+                            # Remove the selected test from the DataFrame
+                            df = df.drop(index=to_del)
+                            # Save the updated DataFrame back to the file
+                            save_csv(DB_FILE, df)
+                            st.success("Test eliminato con successo!")
+                            st.session_state.confirm_delete_test = None
+                            st.experimental_rerun()  # Trigger a page refresh
+                        else:
+                            st.error("Errore: Test selezionato non valido. Assicurati di selezionare un test valido dall'elenco.")
+                            st.session_state.confirm_delete_test = None
+                with col2:
+                    if st.button("Annulla", key="cancel_test"):
+                        st.session_state.confirm_delete_test = None
 
         # —— Modifica Test ——
         st.markdown("### ✏️ Modifica Test")
