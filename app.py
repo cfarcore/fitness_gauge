@@ -248,6 +248,14 @@ def crea_grafico_radar(data, categorie, titolo=""):
 
     return fig
 
+# === Safe Rerun Function ===
+def safe_rerun():
+    """Safely trigger a page rerun."""
+    try:
+        st.experimental_rerun()
+    except RuntimeError:
+        st.warning("Impossibile eseguire il refresh automatico. Ricarica manualmente la pagina.")
+
 # === Streamlit page config & CSS
 if __name__ == "__main__":
     st.set_page_config(page_title="Fitness Gauge", layout="centered", initial_sidebar_state="collapsed")
