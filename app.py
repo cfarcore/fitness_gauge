@@ -352,8 +352,13 @@ if session.logged and session.is_coach:
     with tabs[0]:
         st.subheader("📋 Tutti i Test")
         df = load_csv(DB_FILE)
-        st.dataframe(df)
-        st.download_button("📥 Scarica DB", export_excel(df), file_name="db_completo.xlsx")
+
+        # Debug: Check if the DataFrame is empty
+        if df.empty:
+            st.warning("Nessun test trovato. Assicurati che il file 'db.csv' contenga dati validi.")
+        else:
+            st.dataframe(df)
+            st.download_button("📥 Scarica DB", export_excel(df), file_name="db_completo.xlsx")
 
     with tabs[1]:
         st.subheader("🏋️ Gestione Esercizi")
