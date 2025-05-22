@@ -146,7 +146,7 @@ def valuta_benchmark(categoria, esercizio, sesso, eta, peso, valore_raw,
         mn, mx = r["valoremin"], r["valoremax"]
         lab, tipo = r["etichetta"], r["tipovalore"]
         if tipo == "ratio":
-            rap = valore / peso if peso > 0 else 0  # Avoid division by zero
+            rap = valore / peso if peso > 0 : 0  # Avoid division by zero
             if mn <= rap <= mx:
                 return lab, min(rap / mx, 1.0)
         elif tipo == "valore":
@@ -765,7 +765,10 @@ elif session.logged:
                 st.session_state.confirm_delete_test = to_del
 
             if st.session_state.confirm_delete_test == to_del:
-                st.warning(f"Sei sicuro di voler eliminare il test '{descr[to_del]}'?")
+                st.markdown(
+                    f"<span style='color:red; font-weight:bold;'>⚠️ Sei sicuro di voler eliminare il test '{descr[to_del]}'?</span>",
+                    unsafe_allow_html=True
+                )
                 col1, col2 = st.columns(2)
                 with col1:
                     if st.button("Conferma eliminazione", key="confirm_test"):
