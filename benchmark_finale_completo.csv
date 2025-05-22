@@ -104,12 +104,12 @@ Metabolico,Murph (Half),Maschio,18,120,70,90,tempo,2.01,3.5,Buono
 Metabolico,Murph (Half),Maschio,18,120,70,90,tempo,3.51,5.0,Intermedio
 Metabolico,Murph (Half),Maschio,18,120,70,90,tempo,5.01,7.0,Base
 Metabolico,Murph (Half),Maschio,18,120,70,90,tempo,7.01,10.0,Principiante
-Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,0.0,2.0,Elite
-Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,2.01,3.5,Buono
-Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,3.51,5.0,Intermedio
+Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,1.15,1.25,Elite
+Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,1.25,1.33,Buono
+Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,1.33,1.45,Intermedio
 Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,5.01,7.0,Base
 Condizionamento,Row 500m,Maschio,18,120,70,90,tempo,7.01,10.0,Principiante
-Condizionamento,Row 1000m,Maschio,18,120,70,90,tempo,0.0,2.0,Elite
+Condizionamento,Row 1000m,Maschio,18,120,70,90,tempo,1.5,2.10,Elite
 Condizionamento,Row 1000m,Maschio,18,120,70,90,tempo,2.01,3.5,Buono
 Condizionamento,Row 1000m,Maschio,18,120,70,90,tempo,3.51,5.0,Intermedio
 Condizionamento,Row 1000m,Maschio,18,120,70,90,tempo,5.01,7.0,Base
