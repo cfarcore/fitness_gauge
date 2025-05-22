@@ -355,9 +355,16 @@ if session.logged and session.is_coach:
         if not ex_df.empty:
             to_del = st.selectbox("Seleziona esercizio da eliminare", ex_df["Esercizio"].unique())
             if st.button("Elimina selezionato"):
+                # Remove the exercise from the exercises file
                 ex_df = ex_df[ex_df["Esercizio"] != to_del]
                 save_csv(EXERCISES_FILE, ex_df)
-                st.success(f"'{to_del}' eliminato!")
+
+                # Remove related entries from the database file
+                db_df = load_csv(DB_FILE)
+                db_df = db_df[db_df["Esercizio"] != to_del]
+                save_csv(DB_FILE, db_df)
+
+                st.success(f"Esercizio '{to_del}' e i relativi test sono stati eliminati!")
                 st.experimental_set_query_params(refresh="true")  # Trigger a rerun
 
     with tabs[2]:
