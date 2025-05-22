@@ -109,20 +109,31 @@ def valuta_benchmark(categoria, esercizio, sesso, eta, peso, valore_raw,
     if "etamin" not in dfb.columns or "etamax" not in dfb.columns:
         raise KeyError("Le colonne 'etamin' o 'etamax' non sono presenti nel DataFrame. Verifica i nomi delle colonne.")
 
-    filtrati = dfb[
-        (dfb["categoria"] == cat) &
-        (dfb["esercizio"] == es) &
-        (dfb["genere"] == sx) &
-        (dfb["etamin"] <= eta) &
-        (dfb["etamax"] >= eta) &
-        (dfb["pesomin"] <= peso) &
-        (dfb["pesomax"] >= peso)
-    ]
+    # Filtra i benchmark in base alla categoria
+    if cat == "forza":
+        filtrati = dfb[
+            (dfb["categoria"] == cat) &
+            (dfb["esercizio"] == es) &
+            (dfb["genere"] == sx) &
+            (dfb["etamin"] <= eta) &
+            (dfb["etamax"] >= eta) &
+            (dfb["pesomin"] <= peso) &
+            (dfb["pesomax"] >= peso)
+        ]
+    else:
+        filtrati = dfb[
+            (dfb["categoria"] == cat) &
+            (dfb["esercizio"] == es) &
+            (dfb["genere"] == sx) &
+            (dfb["etamin"] <= eta) &
+            (dfb["etamax"] >= eta)
+        ]
+
     for _, r in filtrati.iterrows():
         mn, mx = r["valoremin"], r["valoremax"]
         lab, tipo = r["etichetta"], r["tipovalore"]
         if tipo == "ratio":
-            rap = valore / peso
+            rap = valore / peso if peso > 0 else 0  # Avoid division by zero
             if mn <= rap <= mx:
                 return lab, min(rap / mx, 1.0)
         elif tipo == "valore":
@@ -225,49 +236,51 @@ def crea_grafico_radar(data, categorie, titolo=""):
     return fig
 
 # === Streamlit page config & CSS
-st.set_page_config(page_title="Fitness Gauge", layout="centered", initial_sidebar_state="collapsed")
+if __name__ == "__main__":
+    st.set_page_config(page_title="Fitness Gauge", layout="centered", initial_sidebar_state="collapsed")
+
 st.markdown("""
     <style>
     /* Imposta il layout per dispositivi mobili */
     html, body, [class*="css"] {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,
-        background-color: #2c3e50, color: #ecf0f1,
-        margin: 0, padding: 0, overflow-x: hidden,
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #2c3e50; color: #ecf0f1;
+        margin: 0; padding: 0; overflow-x: hidden;
     }
-    .css-1d391kg, .css-1d3z3hw { background-color: #34495e, color: #ecf0f1, }
-    h1, h2, h3 { color: #ecf0f1, text-align: center, }
+    .css-1d391kg, .css-1d3z3hw { background-color: #34495e; color: #ecf0f1; }
+    h1, h2, h3 { color: #ecf0f1; text-align: center; }
     .stButton>button {
-        background-color: #3498db, color: white, border-radius: 10px,
-        padding: 0.6em 1.5em, font-weight: bold, border: none, transition: 0.3s,
-        font-size: 1rem,
+        background-color: #3498db; color: white; border-radius: 10px;
+        padding: 0.6em 1.5em; font-weight: bold; border: none; transition: 0.3s;
+        font-size: 1rem;
     }
-    .stButton>button:hover { background-color: #2980b9, transform: scale(1.05), }
+    .stButton>button:hover { background-color: #2980b9; transform: scale(1.05); }
     .stTextInput>div>div>input, .stNumberInput>div>div>input {
-        border-radius: 10px, border: 1px solid #ccc, padding: 0.8em,
-        background-color: #ffffff, color: #2c3e50, font-size: 1rem,
+        border-radius: 10px; border: 1px solid #ccc; padding: 0.8em;
+        background-color: #ffffff; color: #2c3e50; font-size: 1rem;
     }
     .stTextInput>div>div>input::placeholder, .stNumberInput>div>div>input::placeholder {
-        color: #95a5a6,
+        color: #95a5a6;
     }
     .stPlotlyChart, .stAltairChart, .stVegaLiteChart {
-        border-radius: 10px, padding: 1em, background-color: #34495e,
-        box-shadow: 0px 4px 10px rgba(0,0,0,0.1),
+        border-radius: 10px; padding: 1em; background-color: #34495e;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
-    .stDataFrame { font-size: 0.9rem, }
+    .stDataFrame { font-size: 0.9rem; }
     .stDownloadButton>button {
-        background-color: #27ae60, color: white, border-radius: 10px,
-        padding: 0.6em 1.5em, font-weight: bold, border: none, transition: 0.3s,
-        font-size: 1rem,
+        background-color: #27ae60; color: white; border-radius: 10px;
+        padding: 0.6em 1.5em; font-weight: bold; border: none; transition: 0.3s;
+        font-size: 1rem;
     }
-    .stDownloadButton>button:hover { background-color: #1e8449, transform: scale(1.05), }
+    .stDownloadButton>button:hover { background-color: #1e8449; transform: scale(1.05); }
     @media (max-width: 768px) {
         .stButton>button, .stDownloadButton>button {
-            width: 100%, font-size: 1rem, padding: 0.8em,
+            width: 100%; font-size: 1rem; padding: 0.8em;
         }
         .stTextInput>div>div>input, .stNumberInput>div>div>input {
-            font-size: 1rem, padding: 0.8em,
+            font-size: 1rem; padding: 0.8em;
         }
-        h1, h2, h3 { font-size: 1.5rem, }
+        h1, h2, h3 { font-size: 1.5rem; }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -566,7 +579,7 @@ elif session.logged:
                             tooltip=["Data:T", "ValoreNumerico:Q"]
                         ).properties(
                             title=f"Andamento dei Test per {esercizio_selezionato}",
-                            width=700,
+                            width=450,
                             height=400
                         )
 
@@ -614,7 +627,7 @@ elif session.logged:
                             tooltip=["Esercizio", "Percentuale", "Etichetta", "Valore Grezzo", "Data Test"]
                         ).properties(
                             title="Confronto Percentuale tra Esercizi",
-                            width=700,
+                            width=450,
                             height=400
                         )
 
@@ -707,11 +720,14 @@ elif session.logged:
                  for idx in choices}
         to_del = st.selectbox("Seleziona test da eliminare:", choices, format_func=lambda i: descr[i])
         if to_del is not None and st.button("Elimina test selezionato"):
-            if to_del in df.index:
+            if to_del in his.index:
+                # Remove the selected test from the DataFrame
                 df = df.drop(index=to_del)
+                # Save the updated DataFrame back to the file
                 save_csv(DB_FILE, df)
                 st.success("Test eliminato con successo!")
-                st.session_state["refresh"] = True  # Forza un refresh impostando uno stato
+                # Refresh the page to reflect changes
+                st.experimental_rerun()
             else:
                 st.error("Errore: Test selezionato non valido. Assicurati di selezionare un test valido dall'elenco.")
                 st.stop()  # Stop execution to prevent further errors
@@ -736,4 +752,4 @@ elif session.logged:
 # Aggiungi questa logica alla fine del file per gestire il refresh
 if "refresh" in st.session_state and st.session_state["refresh"]:
     st.session_state["refresh"] = False
-    st.experimental_set_query_params(refresh="true")  # Trigger a rerun
+    st.experimental_rerun()  # Correctly trigger a rerun
