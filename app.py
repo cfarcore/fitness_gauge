@@ -779,6 +779,8 @@ elif session.logged:
                             st.success("Test eliminato con successo!")
                             st.session_state.confirm_delete_test = None
                             st.session_state["refresh"] = True  # Set refresh flag
+                            # Reload the updated DataFrame to ensure changes are reflected
+                            his = load_csv(DB_FILE)
                         else:
                             st.error("Errore: Test selezionato non valido. Assicurati di selezionare un test valido dall'elenco.")
                             st.session_state.confirm_delete_test = None
