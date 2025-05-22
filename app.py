@@ -355,7 +355,8 @@ if session.logged and session.is_coach:
         if not ex_df.empty:
             to_del = st.selectbox("Seleziona esercizio da eliminare", ex_df["Esercizio"].unique())
             if st.button("Elimina selezionato"):
-                if st.confirm_dialog(f"Sei sicuro di voler eliminare l'esercizio '{to_del}' e i relativi test?"):
+                st.warning(f"Sei sicuro di voler eliminare l'esercizio '{to_del}' e i relativi test?")
+                if st.button("Conferma eliminazione"):
                     # Remove the exercise from the exercises file
                     ex_df = ex_df[ex_df["Esercizio"] != to_del]
                     save_csv(EXERCISES_FILE, ex_df)
@@ -728,7 +729,8 @@ elif session.logged:
                  for idx in choices}
         to_del = st.selectbox("Seleziona test da eliminare:", choices, format_func=lambda i: descr[i])
         if to_del is not None and st.button("Elimina test selezionato"):
-            if st.confirm_dialog(f"Sei sicuro di voler eliminare il test '{descr[to_del]}'?"):
+            st.warning(f"Sei sicuro di voler eliminare il test '{descr[to_del]}'?")
+            if st.button("Conferma eliminazione"):
                 if to_del in his.index:
                     # Remove the selected test from the DataFrame
                     df = df.drop(index=to_del)
