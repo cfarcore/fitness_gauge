@@ -471,7 +471,7 @@ if session.logged and session.is_coach:
         if st.button("💾 Aggiungi Utente"):
             if not nuovo_nome.strip() or not nuovo_cognome.strip() or not nuova_password:
                 st.warning("Compila nome, cognome e password.")
-            elif (users_df["Nome"] == nuovo_nome).any() and (users_df["Cognome"] == nuovo_cognome).any():
+            elif ((users_df["Nome"] == nuovo_nome) & (users_df["Cognome"] == nuovo_cognome)).any():
                 st.warning("Esiste già un utente con questo nome e cognome.")
             else:
                 r = {
