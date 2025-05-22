@@ -26,22 +26,27 @@ def calcola_eta(data_nascita: date) -> int:
                                             (data_nascita.month, data_nascita.day))
 
 def load_csv(path: str) -> pd.DataFrame:
-    """Load a CSV file into a DataFrame."""
+    """Carica un file CSV in un DataFrame."""
     if os.path.exists(path):
-        return pd.read_csv(path)
+        st.text(f"Caricamento dati da: {path}")  # Debug: Stampa il percorso del file
+        df = pd.read_csv(path)
+        st.text(f"Caricate {len(df)} righe da {path}")  # Debug: Stampa il numero di righe caricate
+        return df
     else:
-        st.warning(f"File not found: {path}. Returning an empty DataFrame.")
+        st.warning(f"File non trovato: {path}. Restituzione di un DataFrame vuoto.")
         return pd.DataFrame()
 
 def save_csv(path: str, df: pd.DataFrame):
-    """Save a DataFrame to a CSV file."""
+    """Salva un DataFrame in un file CSV."""
     try:
         df.to_csv(path, index=False)
-        st.info(f"File saved successfully: {path}")
+        st.info(f"File salvato correttamente: {path}")
+        st.text(f"Salvate {len(df)} righe in {path}")  # Debug: Stampa il numero di righe salvate
     except Exception as e:
-        st.error(f"Error saving file: {e}")
+        st.error(f"Errore durante il salvataggio del file: {e}")
 
 def export_excel(df: pd.DataFrame) -> bytes:
+    """Esporta un DataFrame in formato Excel."""
     buf = BytesIO()
     with pd.ExcelWriter(buf, engine="xlsxwriter") as writer:
         df.to_excel(writer, sheet_name="Risultati", index=False)
@@ -49,24 +54,24 @@ def export_excel(df: pd.DataFrame) -> bytes:
 
 def parse_valore(val: str) -> Optional[float]:
     """
-    Parses a value string into a float. Handles formats like "10", "10:30", or invalid inputs.
+    Interpreta una stringa di valore come float. Gestisce formati come "10", "10:30" o input non validi.
     """
     try:
-        # Handle simple numeric values
+        # Gestisce valori numerici semplici
         return float(val)
     except ValueError:
-        # Handle time format "MM:SS"
+        # Gestisce il formato tempo "MM:SS"
         if isinstance(val, str) and ":" in val:
             try:
                 m, s = val.split(":")
                 return int(m) + int(s) / 60
             except ValueError:
-                return None  # Invalid time format
-        # Handle other invalid formats
+                return None  # Formato tempo non valido
+        # Gestisce altri formati non validi
         return None
 
 def normalizza_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    """lowercase+strip colonne e valori stringa"""
+    """Converte in minuscolo e rimuove spazi dalle colonne e dai valori stringa."""
     df = df.copy()
     df.columns = [c.strip().lower().replace(" ", "") for c in df.columns]  # Normalizza i nomi delle colonne
     for c in df.select_dtypes(include="object"):
@@ -74,7 +79,7 @@ def normalizza_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def rinomina_colonne_benchmark(df: pd.DataFrame) -> pd.DataFrame:
-    """Rinomina le colonne del benchmark DataFrame per corrispondere ai nomi attesi."""
+    """Rinomina le colonne del DataFrame benchmark per corrispondere ai nomi attesi."""
     mapping = {
         "categoria": "categoria",
         "esercizio": "esercizio",
