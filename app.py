@@ -356,6 +356,10 @@ if session.logged and session.is_coach:
         # Debug: Check if the DataFrame is empty
         if df.empty:
             st.warning("Nessun test trovato. Assicurati che il file 'db.csv' contenga dati validi.")
+            # Debug: Print the file path and DataFrame content
+            st.text(f"Percorso file: {DB_FILE}")
+            st.text("Contenuto DataFrame:")
+            st.write(df)
         else:
             st.dataframe(df)
             st.download_button("📥 Scarica DB", export_excel(df), file_name="db_completo.xlsx")
@@ -569,9 +573,9 @@ elif session.logged:
                 "Genere": genere_def,
                 "DataNascita": str(dn)
             }
-            df = load_csv(DB_FILE)
-            df = pd.concat([df, pd.DataFrame([new_t])], ignore_index=True)
-            save_csv(DB_FILE, df)
+            df = load_csv(DB_FILE)  # Load the existing data from db.csv
+            df = pd.concat([df, pd.DataFrame([new_t])], ignore_index=True)  # Append the new test
+            save_csv(DB_FILE, df)  # Save the updated data back to db.csv
             st.success("Test salvato!")
 
     elif pagina == "📈 Analisi":
