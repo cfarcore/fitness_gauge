@@ -803,4 +803,4 @@ elif session.logged:
 # Handle Refresh Logic
 if "refresh" in st.session_state and st.session_state["refresh"]:
     st.session_state["refresh"] = False
-    st.experimental_set_query_params(refresh="true")  # Simulate a refresh by updating query params
+    st.query_params = {"refresh": "true"}  # Simulate a refresh by updating query params
