@@ -15,17 +15,30 @@ BENCHMARK_FILE = "benchmark_finale_completo.csv"
 USERS_FILE = "utenti.csv"
 COACH_CREDENTIALS = {"username": "coach", "password": "supercoach"}
 
-# === Utility functions
+# === Verify DB_FILE Path ===
+DB_FILE = "db.csv"  # Ensure this points to the correct file path
+
+# === Utility functions ===
 def calcola_eta(data_nascita: date) -> int:
     oggi = date.today()
     return oggi.year - data_nascita.year - ((oggi.month, oggi.day) <
                                             (data_nascita.month, data_nascita.day))
 
 def load_csv(path: str) -> pd.DataFrame:
-    return pd.read_csv(path) if os.path.exists(path) else pd.DataFrame()
+    """Load a CSV file into a DataFrame."""
+    if os.path.exists(path):
+        return pd.read_csv(path)
+    else:
+        st.error(f"File not found: {path}")
+        return pd.DataFrame()
 
 def save_csv(path: str, df: pd.DataFrame):
-    df.to_csv(path, index=False)
+    """Save a DataFrame to a CSV file."""
+    try:
+        df.to_csv(path, index=False)
+        st.info(f"File saved successfully: {path}")
+    except Exception as e:
+        st.error(f"Error saving file: {e}")
 
 def export_excel(df: pd.DataFrame) -> bytes:
     buf = BytesIO()
@@ -376,7 +389,10 @@ if session.logged and session.is_coach:
 
                         st.success(f"Esercizio '{to_del}' e i relativi test sono stati eliminati!")
                         st.session_state.confirm_delete_exercise = None
-                        st.experimental_rerun()  # Trigger a page refresh
+                        try:
+                            st.experimental_rerun()  # Trigger a page refresh
+                        except RuntimeError:
+                            st.warning("Impossibile eseguire il refresh automatico. Ricarica manualmente la pagina.")
                 with col2:
                     if st.button("Annulla", key="cancel_exercise"):
                         st.session_state.confirm_delete_exercise = None
@@ -728,14 +744,12 @@ elif session.logged:
 
     elif pagina == "🗃 Storico":
         st.header("Storico Test")
-        # carica db e filtra
-        df = load_csv(DB_FILE)
+        df = load_csv(DB_FILE)  # Ensure the correct file is loaded
         his = df[df["Nome"] == session.user].sort_values("Data", ascending=False)
         st.dataframe(his)
 
         # —— Elimina Test ——
         st.markdown("### ❌ Elimina Test")
-        # listbox col formato “Data – Esercizio – Valore”
         choices = his.index.to_list()
         descr = {idx: f"{his.loc[idx,'Data']} – {his.loc[idx,'Esercizio']} – {his.loc[idx,'Valore']}"
                  for idx in choices}
@@ -755,11 +769,10 @@ elif session.logged:
                         if to_del in his.index:
                             # Remove the selected test from the DataFrame
                             df = df.drop(index=to_del)
-                            # Save the updated DataFrame back to the file
-                            save_csv(DB_FILE, df)
+                            save_csv(DB_FILE, df)  # Save changes to the correct file
                             st.success("Test eliminato con successo!")
                             st.session_state.confirm_delete_test = None
-                            st.experimental_rerun()  # Trigger a page refresh
+                            safe_rerun()  # Trigger a safe page refresh
                         else:
                             st.error("Errore: Test selezionato non valido. Assicurati di selezionare un test valido dall'elenco.")
                             st.session_state.confirm_delete_test = None
@@ -787,7 +800,4 @@ elif session.logged:
 # Aggiungi questa logica alla fine del file per gestire il refresh
 if "refresh" in st.session_state and st.session_state["refresh"]:
     st.session_state["refresh"] = False
-    try:
-        st.experimental_rerun()  # Correctly trigger a rerun
-    except RuntimeError:
-        st.warning("Impossibile eseguire il refresh in questo contesto. Ricarica manualmente la pagina.")
+    safe_rerun()  # Use the safe rerun function
