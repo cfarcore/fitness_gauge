@@ -146,7 +146,7 @@ def valuta_benchmark(categoria, esercizio, sesso, eta, peso, valore_raw,
         mn, mx = r["valoremin"], r["valoremax"]
         lab, tipo = r["etichetta"], r["tipovalore"]
         if tipo == "ratio":
-            rap = valore / peso if peso > 0 : 0  # Avoid division by zero
+            rap = valore / peso if peso > 0 else 0  # Avoid division by zero
             if mn <= rap <= mx:
                 return lab, min(rap / mx, 1.0)
         elif tipo == "valore":
