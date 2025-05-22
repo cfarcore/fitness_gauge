@@ -7,6 +7,7 @@ from io import BytesIO
 import os
 from matplotlib.colors import LinearSegmentedColormap
 import altair as alt  # Importa Altair per il grafico
+from typing import Optional, Dict, Union  # Add missing imports for type hinting
 
 # === Percorsi file
 DB_FILE = "db.csv"
@@ -29,7 +30,7 @@ def load_csv(path: str) -> pd.DataFrame:
     if os.path.exists(path):
         return pd.read_csv(path)
     else:
-        st.error(f"File not found: {path}")
+        st.warning(f"File not found: {path}. Returning an empty DataFrame.")
         return pd.DataFrame()
 
 def save_csv(path: str, df: pd.DataFrame):
@@ -46,7 +47,7 @@ def export_excel(df: pd.DataFrame) -> bytes:
         df.to_excel(writer, sheet_name="Risultati", index=False)
     return buf.getvalue()
 
-def parse_valore(val: str) -> float | None:
+def parse_valore(val: str) -> Optional[float]:
     """
     Parses a value string into a float. Handles formats like "10", "10:30", or invalid inputs.
     """
@@ -108,6 +109,11 @@ def valuta_benchmark(categoria, esercizio, sesso, eta, peso, valore_raw,
     valore = parse_valore(valore_raw)
     if valore is None:
         return None, None
+
+    # Ensure required columns exist
+    required_columns = {"categoria", "esercizio", "genere", "etamin", "etamax", "pesomin", "pesomax", "valoremin", "valoremax", "etichetta", "tipovalore"}
+    if not required_columns.issubset(benchmark_df.columns):
+        raise KeyError(f"Missing required columns in benchmark DataFrame. Expected: {required_columns}")
 
     # Debug: stampa i nomi delle colonne per verificare
     print("Colonne disponibili in benchmark_df:", benchmark_df.columns.tolist())
@@ -366,7 +372,7 @@ if session.logged and session.is_coach:
                 ex_df = pd.concat([ex_df, nuovo], ignore_index=True)
                 save_csv(EXERCISES_FILE, ex_df)
                 st.success(f"Esercizio '{es_nuovo}' aggiunto!")
-                + st.query_params.refresh = "true"
+                st.experimental_set_query_params(refresh="true")  # Corrected refresh logic
         st.markdown("### ❌ Elimina esercizio")
         if not ex_df.empty:
             to_del = st.selectbox("Seleziona esercizio da eliminare", ex_df["Esercizio"].unique())
@@ -429,23 +435,23 @@ if session.logged and session.is_coach:
             if not esercizio.strip() or not etichetta.strip():
                 st.warning("Compila tutti i campi obbligatori.")
             else:
-                nuovo_bench = {
+                nuovo_bench: Dict[str, Union[str, float, int]] = {
                     "categoria": categoria.strip().lower(),
                     "esercizio": esercizio.strip().lower(),
                     "genere": genere.strip().lower(),
-                    "etamin": etamin,
-                    "etamax": etamax,
-                    "pesomin": pesomin,
-                    "pesomax": pesomax,
-                    "valoremin": valoremin,
-                    "valoremax": valoremax,
+                    "etamin": int(etamin),
+                    "etamax": int(etamax),
+                    "pesomin": float(pesomin),
+                    "pesomax": float(pesomax),
+                    "valoremin": float(valoremin),
+                    "valoremax": float(valoremax),
                     "etichetta": etichetta.strip(),
                     "tipovalore": tipovalore.strip().lower()
                 }
                 b_df = pd.concat([b_df, pd.DataFrame([nuovo_bench])], ignore_index=True)
                 save_csv(BENCHMARK_FILE, b_df)
                 st.success("Benchmark aggiunto con successo!")
-                + st.query_params.refresh = "true"
+                st.experimental_set_query_params(refresh="true")
 
         # === Tab 3: Gestione Utenti ===
     with tabs[3]:
