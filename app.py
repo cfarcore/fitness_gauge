@@ -248,13 +248,8 @@ def crea_grafico_radar(data, categorie, titolo=""):
 
     return fig
 
-# === Safe Rerun Function ===
-def safe_rerun():
-    """Safely trigger a page rerun."""
-    try:
-        st.experimental_rerun()
-    except RuntimeError:
-        st.warning("Impossibile eseguire il refresh automatico. Ricarica manualmente la pagina.")
+# === Remove Safe Rerun Function ===
+# Removed the `safe_rerun()` function to avoid using `st.experimental_rerun()`.
 
 # === Streamlit page config & CSS
 if __name__ == "__main__":
@@ -780,7 +775,7 @@ elif session.logged:
                             save_csv(DB_FILE, df)  # Save changes to the correct file
                             st.success("Test eliminato con successo!")
                             st.session_state.confirm_delete_test = None
-                            safe_rerun()  # Trigger a safe page refresh
+                            st.session_state["refresh"] = True  # Set refresh flag
                         else:
                             st.error("Errore: Test selezionato non valido. Assicurati di selezionare un test valido dall'elenco.")
                             st.session_state.confirm_delete_test = None
@@ -800,12 +795,12 @@ elif session.logged:
                 df.loc[to_mod, "Valore"] = new_val
                 save_csv(DB_FILE, df)
                 st.success("Test modificato correttamente!")
-                st.session_state["refresh"] = True  # Forza un refresh impostando uno stato
+                st.session_state["refresh"] = True  # Set refresh flag
 
         # —— Download Excel ——
         st.download_button("📥 Scarica Excel", export_excel(df[df["Nome"] == session.user]), file_name=f"{session.user}_storico.xlsx")
 
-# Aggiungi questa logica alla fine del file per gestire il refresh
+# Handle Refresh Logic
 if "refresh" in st.session_state and st.session_state["refresh"]:
     st.session_state["refresh"] = False
-    safe_rerun()  # Use the safe rerun function
+    st.experimental_set_query_params(refresh="true")  # Simulate a refresh by updating query params
