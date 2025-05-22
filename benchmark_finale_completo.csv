@@ -1,27 +1,3 @@
-import csv
-
-def aggiungi_benchmark(file_path, benchmark):
-    """
-    Aggiunge un nuovo benchmark al file CSV esistente.
-
-    :param file_path: Percorso del file CSV.
-    :param benchmark: Lista contenente i dati del benchmark da aggiungere.
-    """
-    try:
-        with open(file_path, mode='a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(benchmark)
-        print("Benchmark aggiunto con successo!")
-    except Exception as e:
-        print(f"Errore durante la scrittura nel file: {e}")
-
-# Esempio di utilizzo
-nuovo_benchmark = [
-    "Ginnastica", "Pull-up", "Maschio", 18, 65, 0.00, 0.00, "valore", 2.00, 3.00, "Base"
-]
-
-file_path = "/Users/pietrolalla/Documents/fitness_gauge/benchmark_finale_completo.csv"
-aggiungi_benchmark(file_path, nuovo_benchmark)
 Categoria,Esercizio,Genere,EtaMin,EtaMax,PesoMin,PesoMax,TipoValore,ValoreMin,ValoreMax,Etichetta
 Forza,Back Squat,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
 Forza,Back Squat,Maschio,18,65,45,110,ratio,1.1,1.3,Base
