@@ -801,6 +801,7 @@ elif session.logged:
                 save_csv(DB_FILE, df)
                 st.success("Test modificato correttamente!")
                 st.session_state["refresh"] = True  # Set refresh flag
+                st.experimental_set_query_params(refresh="true")  # Correct method to refresh query parameters
 
         # —— Download Excel ——
         st.download_button("📥 Scarica Excel", export_excel(df[df["Nome"] == session.user]), file_name=f"{session.user}_storico.xlsx")
