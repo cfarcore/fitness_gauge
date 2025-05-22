@@ -1,3 +1,176 @@
+import csv
+
+def aggiungi_benchmark(file_path, benchmark):
+    """
+    Aggiunge un nuovo benchmark al file CSV esistente.
+
+    :param file_path: Percorso del file CSV.
+    :param benchmark: Lista contenente i dati del benchmark da aggiungere.
+    """
+    try:
+        with open(file_path, mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(benchmark)
+        print("Benchmark aggiunto con successo!")
+    except Exception as e:
+        print(f"Errore durante la scrittura nel file: {e}")
+
+# Esempio di utilizzo
+nuovo_benchmark = [
+    "Ginnastica", "Pull-up", "Maschio", 18, 65, 0.00, 0.00, "valore", 2.00, 3.00, "Base"
+]
+
+file_path = "/Users/pietrolalla/Documents/fitness_gauge/benchmark_finale_completo.csv"
+aggiungi_benchmark(file_path, nuovo_benchmark)
 Categoria,Esercizio,Genere,EtaMin,EtaMax,PesoMin,PesoMax,TipoValore,ValoreMin,ValoreMax,Etichetta
 Forza,Back Squat,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
 Forza,Back Squat,Maschio,18,65,45,110,ratio,1.1,1.3,Base
+Forza,Back Squat,Maschio,18,65,45,110,ratio,1.4,1.6,Intermedio
+Forza,Back Squat,Maschio,18,65,45,110,ratio,1.7,1.9,Buono
+Forza,Back Squat,Maschio,18,65,45,110,ratio,2.0,3.0,Elite
+Forza,Deadlift,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
+Forza,Deadlift,Maschio,18,65,45,110,ratio,1.1,1.3,Base
+Forza,Deadlift,Maschio,18,65,45,110,ratio,1.4,1.6,Intermedio
+Forza,Deadlift,Maschio,18,65,45,110,ratio,1.7,1.9,Buono
+Forza,Deadlift,Maschio,18,65,45,110,ratio,2.0,3.0,Elite
+Forza,Strict Press,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
+Forza,Strict Press,Maschio,18,65,45,110,ratio,1.1,1.3,Base
+Forza,Strict Press,Maschio,18,65,45,110,ratio,1.4,1.6,Intermedio
+Forza,Strict Press,Maschio,18,65,45,110,ratio,1.7,1.9,Buono
+Forza,Strict Press,Maschio,18,65,45,110,ratio,2.0,3.0,Elite
+Forza,Bench Press,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
+Forza,Bench Press,Maschio,18,65,45,110,ratio,1.1,1.3,Base
+Forza,Bench Press,Maschio,18,65,45,110,ratio,1.4,1.6,Intermedio
+Forza,Bench Press,Maschio,18,65,45,110,ratio,1.7,1.9,Buono
+Forza,Bench Press,Maschio,18,65,45,110,ratio,2.0,3.0,Elite
+Forza,Clean & Jerk,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
+Forza,Clean & Jerk,Maschio,18,65,45,110,ratio,1.1,1.3,Base
+Forza,Clean & Jerk,Maschio,18,65,45,110,ratio,1.4,1.6,Intermedio
+Forza,Clean & Jerk,Maschio,18,65,45,110,ratio,1.7,1.9,Buono
+Forza,Clean & Jerk,Maschio,18,65,45,110,ratio,2.0,3.0,Elite
+Forza,Snatch,Maschio,18,65,45,110,ratio,0.8,1.0,Principiante
+Forza,Snatch,Maschio,18,65,45,110,ratio,1.1,1.3,Base
+Forza,Snatch,Maschio,18,65,45,110,ratio,1.4,1.6,Intermedio
+Forza,Snatch,Maschio,18,65,45,110,ratio,1.7,1.9,Buono
+Forza,Snatch,Maschio,18,65,45,110,ratio,2.0,3.0,Elite
+Ginnastica,Pull-up,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Pull-up,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Pull-up,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Pull-up,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Pull-up,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Ginnastica,Chest to Bar,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Chest to Bar,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Chest to Bar,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Chest to Bar,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Chest to Bar,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Ginnastica,Toes to Bar,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Toes to Bar,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Toes to Bar,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Toes to Bar,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Toes to Bar,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Ginnastica,Handstand Hold,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Handstand Hold,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Handstand Hold,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Handstand Hold,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Handstand Hold,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Ginnastica,Handstand Push-up,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Handstand Push-up,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Handstand Push-up,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Handstand Push-up,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Handstand Push-up,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Ginnastica,Ring Muscle-up,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Ring Muscle-up,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Ring Muscle-up,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Ring Muscle-up,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Ring Muscle-up,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Ginnastica,Bar Muscle-up,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Ginnastica,Bar Muscle-up,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Ginnastica,Bar Muscle-up,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Ginnastica,Bar Muscle-up,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Ginnastica,Bar Muscle-up,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Metabolico,Fran,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Fran,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Fran,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Fran,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Fran,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Cindy,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Metabolico,Cindy,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Metabolico,Cindy,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Metabolico,Cindy,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Metabolico,Cindy,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Metabolico,Karen,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Karen,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Karen,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Karen,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Karen,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Fight Gone Bad,Maschio,18,65,45,110,valore,1.0,5.0,Principiante
+Metabolico,Fight Gone Bad,Maschio,18,65,45,110,valore,6.0,10.0,Base
+Metabolico,Fight Gone Bad,Maschio,18,65,45,110,valore,11.0,15.0,Intermedio
+Metabolico,Fight Gone Bad,Maschio,18,65,45,110,valore,16.0,20.0,Buono
+Metabolico,Fight Gone Bad,Maschio,18,65,45,110,valore,21.0,50.0,Elite
+Metabolico,Grace,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Grace,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Grace,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Grace,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Grace,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Helen,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Helen,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Helen,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Helen,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Helen,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Annie,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Annie,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Annie,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Annie,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Annie,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Murph (Half),Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Murph (Half),Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Murph (Half),Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Murph (Half),Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Murph (Half),Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Row 500m,Maschio,18,65,45,110,tempo,1.15,1.25,Elite
+Metabolico,Row 500m,Maschio,18,65,45,110,tempo,1.25,1.33,Buono
+Metabolico,Row 500m,Maschio,18,65,45,110,tempo,1.33,1.45,Intermedio
+Metabolico,Row 500m,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Row 500m,Maschio,18,65,45,110,tempo,2.01,10.0,Principiante
+Metabolico,Row 1000m,Maschio,18,65,45,110,tempo,1.5,2.10,Elite
+Metabolico,Row 1000m,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Row 1000m,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Row 1000m,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Row 1000m,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Row 2000m,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Row 2000m,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Row 2000m,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Row 2000m,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Row 2000m,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,1 Mile Run,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,1 Mile Run,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,1 Mile Run,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,1 Mile Run,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,1 Mile Run,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Assault Bike 1km,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Assault Bike 1km,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Assault Bike 1km,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Assault Bike 1km,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Assault Bike 1km,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Metabolico,Burpee 50,Maschio,18,65,45,110,tempo,0.0,2.0,Elite
+Metabolico,Burpee 50,Maschio,18,65,45,110,tempo,2.01,3.5,Buono
+Metabolico,Burpee 50,Maschio,18,65,45,110,tempo,3.51,5.0,Intermedio
+Metabolico,Burpee 50,Maschio,18,65,45,110,tempo,5.01,7.0,Base
+Metabolico,Burpee 50,Maschio,18,65,45,110,tempo,7.01,10.0,Principiante
+Forza,back squat,femmina,18,65,40,65,ratio,1.0,1.5,Base
+Forza,back squat,femmina,18,65,40,65,ratio,1.6,2.0,Medio
+Forza,back squat,femmina,18,65,40,65,ratio,2.1,2.5,Avanzato
+Forza,back squat,femmina,18,65,40,65,ratio,2.6,3.0,Elite
+Forza,deadlift,femmina,18,65,40,65,ratio,1.5,2.0,Base
+Forza,deadlift,femmina,18,65,40,65,ratio,2.1,2.5,Medio
+Forza,deadlift,femmina,18,65,40,65,ratio,2.6,3.0,Avanzato
+Forza,deadlift,femmina,18,65,40,65,ratio,3.1,3.5,Elite
+Ginnastica,pull up,femmina,18,65,40,65,valore,1.0,3.0,Base
+Ginnastica,pull up,femmina,18,65,40,65,valore,4.0,7.0,Medio
+Ginnastica,pull up,femmina,18,65,40,65,valore,8.0,12.0,Avanzato
+Ginnastica,pull up,femmina,18,65,40,65,valore,13.0,20.0,Elite
+Metabolico,1000m row,femmina,18,65,40,65,tempo,4.5,5.0,Base
+Metabolico,1000m row,femmina,18,65,40,65,tempo,4.0,4.49,Medio
+Metabolico,1000m row,femmina,18,65,40,65,tempo,3.5,3.99,Avanzato
+Metabolico,1000m row,femmina,18,65,40,65,tempo,3.0,3.49,Elite
