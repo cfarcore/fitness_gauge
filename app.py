@@ -808,5 +808,4 @@ elif session.logged:
 # Handle Refresh Logic
 if "refresh" in st.session_state and st.session_state["refresh"]:
     st.session_state["refresh"] = False
-    st.query_params.clear()                   # cancella vecchi param
-    st.query_params.refresh = "true"          # imposta il nuovo
+    st.experimental_set_query_params(refresh="true")  # Correct method to refresh query parameters
