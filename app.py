@@ -7,7 +7,7 @@ from io import BytesIO
 import os
 from matplotlib.colors import LinearSegmentedColormap
 import altair as alt  # Importa Altair per il grafico
-from typing import Optional, Dict, Union  # Add missing imports for type hinting
+from typing import Optional, Dict, Union, List, Tuple  # Add missing imports for type hinting
 
 # === Percorsi file
 DB_FILE = "db.csv"
@@ -15,9 +15,6 @@ EXERCISES_FILE = "esercizi.csv"
 BENCHMARK_FILE = "benchmark_finale_completo.csv"
 USERS_FILE = "utenti.csv"
 COACH_CREDENTIALS = {"username": "coach", "password": "supercoach"}
-
-# === Verify DB_FILE Path ===
-DB_FILE = "db.csv"  # Ensure this points to the correct file path
 
 # === Utility functions ===
 def calcola_eta(data_nascita: date) -> int:
@@ -109,31 +106,23 @@ def rinomina_colonne_benchmark(df: pd.DataFrame) -> pd.DataFrame:
     print("Colonne rinominate nel benchmark_df:", df.columns.tolist())
     return df
 
-def valuta_benchmark(categoria, esercizio, sesso, eta, peso, valore_raw,
-                     benchmark_df: pd.DataFrame):
+def valuta_benchmark(categoria: str, esercizio: str, sesso: str, eta: int, peso: float, valore_raw: str, benchmark_df: pd.DataFrame) -> Tuple[Optional[str], Optional[float]]:
     valore = parse_valore(valore_raw)
     if valore is None:
         return None, None
 
-    # Ensure required columns exist
     required_columns = {"categoria", "esercizio", "genere", "etamin", "etamax", "pesomin", "pesomax", "valoremin", "valoremax", "etichetta", "tipovalore"}
     if not required_columns.issubset(benchmark_df.columns):
         raise KeyError(f"Missing required columns in benchmark DataFrame. Expected: {required_columns}")
 
-    # Debug: stampa i nomi delle colonne per verificare
-    print("Colonne disponibili in benchmark_df:", benchmark_df.columns.tolist())
-
-    # normalize inputs
     cat = categoria.strip().lower()
     es = esercizio.strip().lower()
     sx = sesso.strip().lower()
     dfb = benchmark_df
 
-    # Assicurati che i nomi delle colonne siano coerenti
     if "etamin" not in dfb.columns or "etamax" not in dfb.columns:
         raise KeyError("Le colonne 'etamin' o 'etamax' non sono presenti nel DataFrame. Verifica i nomi delle colonne.")
 
-    # Filtra i benchmark in base alla categoria
     if cat == "forza":
         filtrati = dfb[
             (dfb["categoria"] == cat) &
@@ -168,7 +157,7 @@ def valuta_benchmark(categoria, esercizio, sesso, eta, peso, valore_raw,
                 return lab, min((mx - valore) / (mx - mn), 1.0)
     return None, None
 
-def crea_barra_orizzontale(progresso, titolo=""):
+def crea_barra_orizzontale(progresso: float, titolo: str = "") -> plt.Figure:
     fig, ax = plt.subplots(figsize=(6, 0.4))
     cmap = plt.get_cmap("RdYlGn")
     col = cmap(0.1 if progresso < 0.5 else (0.5 if progresso < 0.8 else 0.9))
@@ -223,7 +212,7 @@ def crea_tubo_led(progresso: float, tube_height: float = 4, tube_width: float = 
 
     return fig
 
-def crea_grafico_radar(data, categorie, titolo=""):
+def crea_grafico_radar(data: list[float], categorie: list[str], titolo: str = "") -> plt.Figure:
     """
     Crea un grafico radar per visualizzare i progressi.
     - `data`: lista di valori normalizzati (0-1) per ogni categoria.
@@ -412,10 +401,8 @@ if session.logged and session.is_coach:
 
                         st.success(f"Esercizio '{to_del}' e i relativi test sono stati eliminati!")
                         st.session_state.confirm_delete_exercise = None
-                        try:
-                            st.experimental_rerun()  # Trigger a page refresh
-                        except RuntimeError:
-                            st.warning("Impossibile eseguire il refresh automatico. Ricarica manualmente la pagina.")
+                        # Rimuovi st.experimental_rerun() e usa solo il refresh tramite query params
+                        st.experimental_set_query_params(refresh="true")
                 with col2:
                     if st.button("Annulla", key="cancel_exercise"):
                         st.session_state.confirm_delete_exercise = None
@@ -496,25 +483,11 @@ if session.logged and session.is_coach:
                     "DataNascita": str(nuova_data)
                 }
                 users_df = pd.concat([users_df, pd.DataFrame([r])], ignore_index=True)
-                save_csv(USERS_FILE, users_df)
+                save_csv(USERS_FILE, users_df)  # Save the updated DataFrame
                 st.success(f"Utente '{nuovo_nome} {nuovo_cognome}' aggiunto.")
-                users_df = load_csv(USERS_FILE)
-
-        st.markdown("### ❌ Elimina Utente")
-        if not users_df.empty:
-            da_cancellare = st.selectbox(
-                "Seleziona utente da eliminare",
-                users_df.apply(lambda x: f"{x['Nome']} {x['Cognome']}", axis=1),
-                key="del_utente"
-            )
-            if st.button("Elimina Utente"):
-                nome, cognome = da_cancellare.split(" ")
-                users_df = users_df[~((users_df["Nome"] == nome) & (users_df["Cognome"] == cognome))]
-                save_csv(USERS_FILE, users_df)
-                st.success(f"Utente '{da_cancellare}' eliminato.")
-        else:
-            st.info("Nessun utente registrato.")
-    
+                st.text(f"Nuovo utente salvato in: {USERS_FILE}")  # Debug: Confirm save
+                users_df = load_csv(USERS_FILE)  # Reload to confirm changes
+                st.dataframe(users_df)  # Display updated DataFrame
 
 # === Area Utente
 elif session.logged:
